@@ -1,240 +1,75 @@
 <template>
-  <div id="blur"></div>
-  <div id="calc-background">
-    <div id="oldresult">6000/2+3227*2</div>
-    <div id="calculating">100+10</div>
-    <button id="e">e</button>
-    <button id="micro"><span>&#181;</span></button>
-    <button id="sin">sin</button>
-    <button id="deg">deg</button>
+  <div class="flex items-center justify-center h-screen bg-[#DAF0FF]">
+    <div class="bg-white w-[375px] h-[812px] p-6 rounded-3xl shadow-lg flex flex-col justify-between">
+      <div>
+        <div class="text-gray-400 text-3xl mb-1 text-right h-1/5">{{ expression }}</div>
+        <div class="text-5xl font-bold text-black mb-4 text-right h-1/3 align-middle">= {{ result }}</div>
+      </div>
+      <div class="grid grid-cols-4 gap-2">
+        <button class="btn-func" @click="clear">Ac</button>
+        <button class="btn-func" disabled>e</button>
+        <button class="btn-func" disabled>μ</button>
+        <button class="btn-func" disabled>sin</button>
+        <button class="btn-num" @click="append('7')">7</button>
+        <button class="btn-num" @click="append('8')">8</button>
+        <button class="btn-num" @click="append('9')">9</button>
+        <button class="btn-op" @click="append('-')">-</button>
+        <button class="btn-num" @click="append('4')">4</button>
+        <button class="btn-num" @click="append('5')">5</button>
+        <button class="btn-num" @click="append('6')">6</button>
+        <button class="btn-op" @click="append('+')">+</button>
+        <button class="btn-num" @click="append('1')">1</button>
+        <button class="btn-num" @click="append('2')">2</button>
+        <button class="btn-num" @click="append('3')">3</button>
+        <button class="btn-op" @click="append('*')">*</button>
+        <button class="btn-num" @click="append('0')">0</button>
+        <button class="btn-func" disabled>deg</button>
+        <button class="btn-op" @click="append('/')">/</button>
+        <button class="btn-equal" @click="calculate">=</button>
+      </div>
+      
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup>
+import { ref } from 'vue';
 
+const expression = ref('');
+const result = ref('');
+
+const append = (val) => {
+  expression.value += val;
+};
+
+const clear = () => {
+  expression.value = '';
+  result.value = '';
+};
+
+const calculate = () => {
+  try {
+    // Basic eval alternative (CAUTION: eval should not be used in production apps)
+    result.value = eval(expression.value);
+  } catch {
+    result.value = 'Error';
+  }
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Poppins');
-body{
-  background-color: #DAF0FF;
-  font-family: 'Poppins';
-};
-#blur{
-  position: absolute;
-  width: 357px;
-  height: 835px;
-  left: 639px;
-  top: 164px;
-
-  background: rgba(96, 190, 255, 0.55);
-  filter: blur(123px);
-  border-radius: 39px;
-  z-index: 1;
+.btn-num,
+.btn-func,
+.btn-op,
+.btn-equal {
+  @apply bg-white text-sky-500 font-semibold py-2 rounded-xl shadow-sm h-[60px] w-[62px];
 }
-#calc-background{
-  position: absolute;
-  width: 375px;
-  height: 812px;
-  left: 533px;
-  top: 134px;
-  background: #F7F8FB;
-  backdrop-filter: blur(102px);
-
-  border-radius: 39px;
-  z-index: 2;
+.btn-num:hover,
+.btn-func:hover,
+.btn-op:hover {
+  @apply bg-blue-50;
 }
-#oldresult{
-  position: absolute;
-width: 175px;
-height: 36px;
-left: 167px;
-top: 138px;
-
-font-family: 'Poppins';
-font-style: normal;
-font-weight: 400;
-font-size: 24px;
-line-height: 36px;
-
-
-
-color: #818181;
-}
-#calculating{
-  position: absolute;
-  width: 171px;
-  height: 72px;
-  left: 171px;
-  top: 180px;
-
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 48px;
-  line-height: 72px;
-/* identical to box height */
-
-
-  color: #424242;
-}
-#e{
-  box-sizing: border-box;
-
-/* Auto layout */
-
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 6px 4px;
-gap: 10px;
-
-  position: absolute;
-  width: 62px;
-  height: 40px;
-  left: 34px;
-  top: 330px;
-
-  background-color: #FFFFFF;
-  border: 1px solid #FFFFFF;
-  backdrop-filter: blur(12px);
-/* Note: backdrop-filter has minimal browser support */
-
-  border-radius: 16px;
-  color: #7CC9FF;
-}
-#micro{
-  box-sizing: border-box;
-
-/* Auto layout */
-
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 6px 4px;
-gap: 10px;
-
-position: absolute;
-width: 62px;
-height: 40px;
-left: 116px;
-top: 330px;
-
-background: #FFFFFF;
-border: 1px solid #FFFFFF;
-backdrop-filter: blur(12px);
-/* Note: backdrop-filter has minimal browser support */
-
-border-radius: 16px;
-color: #7CC9FF;
-}
-#sin{
-  box-sizing: border-box;
-
-/* Auto layout */
-
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 6px 4px;
-gap: 10px;
-
-position: absolute;
-width: 62px;
-height: 40px;
-left: 198px;
-top: 330px;
-
-background: #FFFFFF;
-border: 1px solid #FFFFFF;
-backdrop-filter: blur(12px);
-/* Note: backdrop-filter has minimal browser support */
-
-border-radius: 16px;
-color: #7CC9FF;
-}
-#deg{
-/* Frame 28 */
-
-
-box-sizing: border-box;
-
-/* Auto layout */
-
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 6px 4px;
-gap: 10px;
-
-position: absolute;
-width: 62px;
-height: 40px;
-left: 280px;
-top: 330px;
-
-background: #FFFFFF;
-border: 1px solid #FFFFFF;
-backdrop-filter: blur(12px);
-/* Note: backdrop-filter has minimal browser support */
-
-color: #7CC9FF;
-/* Note: backdrop-filter has minimal browser support */
-
-border-radius: 16px;
-}
-#ac{
-  box-sizing: border-box;
-
-/* Auto layout */
-
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding: 6px 4px;
-gap: 10px;
-
-position: absolute;
-width: 62px;
-height: 62px;
-left: 34px;
-top: 386px;
-
-background: #FFFFFF;
-border: 1px solid #FFFFFF;
-backdrop-filter: blur(12px);
-/* Note: backdrop-filter has minimal browser support */
-color: #7CC9FF;
-border-radius: 16px;
-}
-#back{
-  
-position: absolute;
-width: 62px;
-height: 62px;
-left: 116px;
-top: 386px;
-
-background: linear-gradient(129.7deg, rgba(255, 255, 255, 0.6) -9.69%, rgba(255, 255, 255, 0.4) 114.23%);
-border-radius: 16px;
-
-border-radius: 16px;
-}
-#divide{
-  position: absolute;
-width: 62px;
-height: 62px;
-left: 198px;
-top: 386px;
-
-background: #ADE2FF;
-border-radius: 12px;
-color:#109DFF;
+.btn-equal {
+  @apply bg-blue-500 text-white font-bold;
 }
 </style>
